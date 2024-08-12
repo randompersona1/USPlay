@@ -17,14 +17,14 @@ jobs:
       fail-fast: false
       matrix:
         unityVersion:
-          - auto
+          - 2023.2.12f1
         targetPlatform:
           - StandaloneWindows64
-          - StandaloneLinux64
-          - StandaloneOSX
+          #- StandaloneLinux64
+          #- StandaloneOSX
           # Skip Android build until "JDK not found" issue has been solved (https://github.com/game-ci/unity-builder/issues/489)
-          - Android
-          - iOS
+          #- Android
+          #- iOS
           # - WebGL
     steps:
       - name: Unity - Activate

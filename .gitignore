@@ -41,6 +41,8 @@ pretrained_models/
 # Visual Studio cache directory
 .vs/
 
+.vsconfig
+
 # Visual Studio Code config
 .vscode/
 

@@ -27,6 +27,14 @@ jobs:
           - iOS
           # - WebGL
     steps:
+      - name: Unity - Activate
+        uses: game-ci/unity-activate@v2.0.0
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_VERSION: ${{ matrix.unityVersion }}
+
       # Clone repo and restore cache
       - uses: actions/checkout@v2
         with:

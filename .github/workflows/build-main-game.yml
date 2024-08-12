@@ -7,7 +7,6 @@ on:
   workflow_dispatch: {}
 
 env:
-  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
   PROJECT_PATH: UltraStar Play
 
 jobs:
@@ -18,13 +17,13 @@ jobs:
       fail-fast: false
       matrix:
         unityVersion:
-          - 2022.2.4f1
+          - auto
         targetPlatform:
           - StandaloneWindows64
           - StandaloneLinux64
           - StandaloneOSX
           # Skip Android build until "JDK not found" issue has been solved (https://github.com/game-ci/unity-builder/issues/489)
-          #- Android
+          - Android
           - iOS
           # - WebGL
     steps:
@@ -41,7 +40,7 @@ jobs:
             Library-${{ env.PROJECT_PATH }}-${{ matrix.targetPlatform }}-
             Library-${{ env.PROJECT_PATH }}-
             Library-
-      
+
       # Run setup script
       - name: Setup Script
         working-directory: tools
@@ -50,14 +49,21 @@ jobs:
       # Build Executables.
       - uses: game-ci/unity-builder@v2.1.2
         env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
         with:
           projectPath: ${{ env.PROJECT_PATH }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
-          customParameters: '-myParameter myValue -myBoolean -ThirdParameter andItsValue'
+          customParameters: "-myParameter myValue -myBoolean -ThirdParameter andItsValue"
           allowDirtyBuild: true
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.targetPlatform }}-build
           path: build/${{ matrix.targetPlatform }}
+
+      # Return License
+      - name: Return license
+        uses: game-ci/unity-return-license@v2
+        if: always()

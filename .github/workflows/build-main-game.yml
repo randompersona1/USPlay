@@ -57,14 +57,13 @@ jobs:
       # Build Executables.
       - uses: game-ci/unity-builder@v4
         env:
+          UNITY_LICENCE: ${{ secrets.UNITY_LICENCE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          UNITY_LICENCE: ${{ secrets.UNITY_LICENCE }}
         with:
           projectPath: ${{ env.PROJECT_PATH }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
-          customParameters: "-myParameter myValue -myBoolean -ThirdParameter andItsValue"
           allowDirtyBuild: true
       - uses: actions/upload-artifact@v2
         with:
